@@ -6,6 +6,8 @@ from app.schemas.workout import (
     TrainingGoal,
     WorkoutPlanRequest,
     WorkoutPlanResponse,
+    WorkoutProgressDayAnalysisRequest,
+    WorkoutProgressDayAnalysisResponse,
 )
 from app.services.openai_workout_service import OpenAIWorkoutService
 
@@ -32,3 +34,18 @@ def get_equipment() -> dict[str, list[str]]:
 def create_workout_plan(request: WorkoutPlanRequest) -> WorkoutPlanResponse:
     plan = workout_service.generate_plan(request)
     return WorkoutPlanResponse(plan=plan, model=settings.openai_model)
+
+
+@router.post(
+    "/workout-progress/analyze-day",
+    response_model=WorkoutProgressDayAnalysisResponse,
+    tags=["Workout Progress"],
+)
+def analyze_workout_progress_day(
+    request: WorkoutProgressDayAnalysisRequest,
+) -> WorkoutProgressDayAnalysisResponse:
+    analysis = workout_service.analyze_progress_day(request)
+    return WorkoutProgressDayAnalysisResponse(
+        **analysis.model_dump(mode="json"),
+        model=settings.openai_model,
+    )

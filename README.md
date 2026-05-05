@@ -81,4 +81,35 @@ API da ho tro cac field optional trong `preferences`, nhung app nen hoi them:
 - Trinh do tap
 - Chan thuong/han che van dong
 - Gioi tinh, muc do hoat dong hien tai, lich sinh hoat, mon bai tap khong thich neu can ca nhan hoa sau hon
-"# workoutplannerAPI" 
+"# workoutplannerAPI"
+## Phan tich tien do mot ngay tap
+
+`POST /api/v1/workout-progress/analyze-day`
+
+Body mau:
+
+```json
+{
+  "performed_at": 1777950000000,
+  "day": 1,
+  "day_title": "Upper Body Strength",
+  "entries": [
+    {
+      "exercise_name": "Dumbbell Bench Press",
+      "weight_kg": 22.5,
+      "sets": null,
+      "reps": 10,
+      "notes": "Day 1 - Upper Body Strength | Planned: 4 sets - 8-10 reps - 60s rest - Moderate to High | User note: Form on, rep cuoi hoi nang"
+    },
+    {
+      "exercise_name": "Pull-Ups",
+      "weight_kg": null,
+      "sets": null,
+      "reps": 8,
+      "notes": "Day 1 - Upper Body Strength | Planned: 3 sets - 6-8 reps - 60s rest - Moderate to High"
+    }
+  ]
+}
+```
+
+API tra ve phan tich, loi khuyen, recommendations, next_steps, safety_notes va `next_week_day` de app co the hien thi lich tap goi y cho tuan tiep theo.

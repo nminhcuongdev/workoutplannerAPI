@@ -138,3 +138,31 @@ class WorkoutPlan(BaseModel):
 class WorkoutPlanResponse(BaseModel):
     plan: WorkoutPlan
     model: str
+
+
+class WorkoutProgressEntry(BaseModel):
+    exercise_name: str = Field(min_length=1, max_length=200)
+    weight_kg: float | None = Field(default=None, gt=0, le=1000)
+    sets: int | None = Field(default=None, ge=1, le=100)
+    reps: int | None = Field(default=None, ge=0, le=1000)
+    notes: str | None = Field(default=None, max_length=3000)
+
+
+class WorkoutProgressDayAnalysisRequest(BaseModel):
+    performed_at: int = Field(gt=0)
+    day: int = Field(ge=1, le=365)
+    day_title: str = Field(min_length=1, max_length=200)
+    entries: list[WorkoutProgressEntry] = Field(min_length=1)
+
+
+class WorkoutProgressDayAnalysis(BaseModel):
+    analysis_summary: str
+    advice: str
+    recommendations: list[str]
+    next_steps: list[str]
+    safety_notes: list[str]
+    next_week_day: WorkoutDay
+
+
+class WorkoutProgressDayAnalysisResponse(WorkoutProgressDayAnalysis):
+    model: str
