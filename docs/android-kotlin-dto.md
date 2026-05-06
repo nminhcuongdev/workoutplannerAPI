@@ -136,3 +136,95 @@ suspend fun analyzeWorkoutProgressDay(
     @Body body: WorkoutProgressDayAnalysisRequestDto
 ): WorkoutProgressDayAnalysisResponseDto
 ```
+## Workout advice DTO
+
+```kotlin
+data class WorkoutAdviceRequestDto(
+    val sent_at: Long,
+    val message: String,
+    val conversation_history: List<AdviceConversationMessageDto> = emptyList(),
+    val context: AdviceContextDto
+)
+
+data class AdviceConversationMessageDto(
+    val role: String,
+    val content: String,
+    val created_at: Long
+)
+
+data class AdviceContextDto(
+    val profile: AdviceProfileDto,
+    val equipment: List<AdviceEquipmentDto> = emptyList(),
+    val current_plan: AdviceCurrentPlanDto? = null,
+    val today_workout: WorkoutDayDto? = null,
+    val recent_session_states: List<AdviceSessionStateDto> = emptyList(),
+    val recent_workout_logs: List<Map<String, Any?>> = emptyList(),
+    val data_notes: List<String> = emptyList()
+)
+
+data class AdviceProfileDto(
+    val name: String? = null,
+    val age: Int? = null,
+    val height_cm: Double? = null,
+    val weight_kg: Double? = null,
+    val body_fat_percentage: Double? = null,
+    val skeletal_muscle_mass_kg: Double? = null,
+    val body_water_liters: Double? = null,
+    val visceral_fat_level: Double? = null,
+    val bmr_kcal: Double? = null,
+    val waist_to_hip_ratio: Double? = null,
+    val left_arm_muscle_kg: Double? = null,
+    val right_arm_muscle_kg: Double? = null,
+    val trunk_muscle_kg: Double? = null,
+    val left_leg_muscle_kg: Double? = null,
+    val right_leg_muscle_kg: Double? = null,
+    val training_goal: String? = null,
+    val days_per_week: Int? = null,
+    val session_duration_minutes: Int? = null,
+    val experience_level: String? = null,
+    val injuries_or_limitations: String? = null,
+    val preferred_language: String = "vi"
+)
+
+data class AdviceEquipmentDto(
+    val name: String,
+    val status: String
+)
+
+data class AdviceCurrentPlanDto(
+    val weekly_schedule: List<WorkoutDayDto> = emptyList()
+)
+
+data class AdviceSessionStateDto(
+    val date: String,
+    val day: Int? = null,
+    val status: String,
+    val updated_at: Long
+)
+
+data class WorkoutAdviceResponseDto(
+    val reply: String,
+    val recommendations: List<String>,
+    val safety_notes: List<String>,
+    val suggested_actions: List<WorkoutAdviceActionDto>,
+    val needs_medical_attention: Boolean,
+    val plan_adjustment: WorkoutDayDto? = null,
+    val model: String
+)
+
+data class WorkoutAdviceActionDto(
+    val type: String,
+    val label: String,
+    val details: String
+)
+```
+
+Them vao Retrofit interface:
+
+```kotlin
+@POST("api/v1/workout-advice")
+suspend fun getWorkoutAdvice(
+    @Body body: WorkoutAdviceRequestDto
+): WorkoutAdviceResponseDto
+```
+

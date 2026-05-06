@@ -4,6 +4,8 @@ from app.core.config import settings
 from app.schemas.workout import (
     EquipmentName,
     TrainingGoal,
+    WorkoutAdviceRequest,
+    WorkoutAdviceResponse,
     WorkoutPlanRequest,
     WorkoutPlanResponse,
     WorkoutProgressDayAnalysisRequest,
@@ -49,3 +51,18 @@ def analyze_workout_progress_day(
         **analysis.model_dump(mode="json"),
         model=settings.openai_model,
     )
+
+
+@router.post(
+    "/workout-advice",
+    response_model=WorkoutAdviceResponse,
+    tags=["Workout Advice"],
+)
+def create_workout_advice(request: WorkoutAdviceRequest) -> WorkoutAdviceResponse:
+    advice = workout_service.advise(request)
+    return WorkoutAdviceResponse(
+        **advice.model_dump(mode="json"),
+        model=settings.openai_model,
+    )
+
+

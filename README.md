@@ -113,3 +113,52 @@ Body mau:
 ```
 
 API tra ve phan tich, loi khuyen, recommendations, next_steps, safety_notes va `next_week_day` de app co the hien thi lich tap goi y cho tuan tiep theo.
+## Tu van tap luyen bang LLM
+
+`POST /api/v1/workout-advice`
+
+Body mau:
+
+```json
+{
+  "sent_at": 1778047200000,
+  "message": "Hom nay toi dau vai, co nen tap khong?",
+  "conversation_history": [
+    {
+      "role": "assistant",
+      "content": "Ask me about today's workout, pain, recovery, nutrition, or how to adjust your current plan.",
+      "created_at": 1778047100000
+    },
+    {
+      "role": "user",
+      "content": "Hom nay toi dau vai, co nen tap khong?",
+      "created_at": 1778047200000
+    }
+  ],
+  "context": {
+    "profile": {
+      "name": "Marcus",
+      "age": 28,
+      "height_cm": 170,
+      "weight_kg": 63,
+      "training_goal": "muscle_gain",
+      "days_per_week": 5,
+      "session_duration_minutes": 60,
+      "experience_level": "intermediate",
+      "preferred_language": "vi"
+    },
+    "equipment": [
+      { "name": "Dumbbells", "status": "Available" },
+      { "name": "Bench", "status": "Available" }
+    ],
+    "current_plan": { "weekly_schedule": [] },
+    "today_workout": null,
+    "recent_session_states": [],
+    "recent_workout_logs": [],
+    "data_notes": []
+  }
+}
+```
+
+API tra ve `reply`, `recommendations`, `safety_notes`, `suggested_actions`, `needs_medical_attention`, `plan_adjustment` va `model`. `plan_adjustment` se la `null` neu LLM chi can tu van, hoac mot `WorkoutDay` neu can goi y thay doi buoi tap.
+
