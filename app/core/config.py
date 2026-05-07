@@ -1,11 +1,11 @@
-﻿from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     app_name: str = "Workout Planner API"
     app_env: str = "development"
     openai_api_key: str | None = None
-    openai_model: str = "gpt-4o-mini"
+    openai_model: str = "gpt-5.2"
     allowed_origins: str = "*"
 
     @property
@@ -26,3 +26,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
