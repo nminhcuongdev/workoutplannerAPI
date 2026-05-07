@@ -1,8 +1,8 @@
 # Workout Planner API
 
-FastAPI backend tao lich tap gym bang OpenAI LLM. API duoc thiet ke de Android Kotlin MVVM Jetpack Compose goi bang JSON.
+FastAPI backend for generating gym workout plans and workout advice with OpenAI LLMs. The API is designed for Android Kotlin MVVM Jetpack Compose clients that exchange JSON.
 
-## Cai dat
+## Setup
 
 ```powershell
 python -m venv .venv
@@ -11,25 +11,25 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Nhap `OPENAI_API_KEY` vao file `.env`.
+Add your `OPENAI_API_KEY` to the `.env` file.
 
-## Chay server
+## Run the server
 
 ```powershell
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Mo Swagger:
+Open Swagger:
 
 ```text
 http://localhost:8000/docs
 ```
 
-## Endpoint chinh
+## Core endpoint
 
 `POST /api/v1/workout-plans`
 
-Body mau:
+Example body:
 
 ```json
 {
@@ -70,23 +70,23 @@ Body mau:
 }
 ```
 
-Android DTO/Retrofit mau nam trong `docs/android-kotlin-dto.md`.
+Android DTO and Retrofit examples are in `docs/android-kotlin-dto.md`.
 
-## Thong tin nen thu them tu user
+## Optional user inputs
 
-API da ho tro cac field optional trong `preferences`, nhung app nen hoi them:
+The API supports optional fields in `preferences`, but the app should ask for these when needed:
 
-- So buoi tap moi tuan
-- Thoi luong moi buoi
-- Trinh do tap
-- Chan thuong/han che van dong
-- Gioi tinh, muc do hoat dong hien tai, lich sinh hoat, mon bai tap khong thich neu can ca nhan hoa sau hon
-"# workoutplannerAPI"
-## Phan tich tien do mot ngay tap
+- Days per week
+- Session duration
+- Experience level
+- Injuries or movement limitations
+- Gender, current activity level, daily schedule, and disliked exercises for deeper personalization
+
+## Workout progress analysis
 
 `POST /api/v1/workout-progress/analyze-day`
 
-Body mau:
+Example body:
 
 ```json
 {
@@ -112,17 +112,18 @@ Body mau:
 }
 ```
 
-API tra ve phan tich, loi khuyen, recommendations, next_steps, safety_notes va `next_week_day` de app co the hien thi lich tap goi y cho tuan tiep theo.
-## Tu van tap luyen bang LLM
+The API returns analysis, advice, recommendations, next steps, safety notes, and `next_week_day` so the app can show a suggested plan for the next week.
+
+## Workout advice with LLM
 
 `POST /api/v1/workout-advice`
 
-Body mau:
+Example body:
 
 ```json
 {
   "sent_at": 1778047200000,
-  "message": "Hom nay toi dau vai, co nen tap khong?",
+  "message": "Today my shoulder hurts. Should I train?",
   "conversation_history": [
     {
       "role": "assistant",
@@ -131,7 +132,7 @@ Body mau:
     },
     {
       "role": "user",
-      "content": "Hom nay toi dau vai, co nen tap khong?",
+      "content": "Today my shoulder hurts. Should I train?",
       "created_at": 1778047200000
     }
   ],
@@ -160,5 +161,4 @@ Body mau:
 }
 ```
 
-API tra ve `reply`, `recommendations`, `safety_notes`, `suggested_actions`, `needs_medical_attention`, `plan_adjustment` va `model`. `plan_adjustment` se la `null` neu LLM chi can tu van, hoac mot `WorkoutDay` neu can goi y thay doi buoi tap.
-
+The API returns `reply`, `recommendations`, `safety_notes`, `suggested_actions`, `needs_medical_attention`, `plan_adjustment`, and `model`. `plan_adjustment` is `null` when the LLM only needs to answer the question, or a `WorkoutDay` when it should suggest an adjusted workout.
